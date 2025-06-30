@@ -4,7 +4,7 @@ services:
   laravel.test:
     build:
       context: .  # ¡Cambio crucial! Usa el directorio raíz
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
