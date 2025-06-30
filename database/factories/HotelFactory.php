@@ -14,6 +14,7 @@ class HotelFactory extends Factory
             'city' => $this->faker->city(),
             'nit' => $this->faker->unique()->numerify('########-#'),
             'total_rooms' => $this->faker->numberBetween(10, 100),
+            'image' => $this->faker->imageUrl(640, 480, 'hotel', true, 'Faker'), // Generates a random hotel image URL
             'created_at' => now(),
             'updated_at' => now(),
         ];

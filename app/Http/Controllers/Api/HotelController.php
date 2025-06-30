@@ -25,6 +25,7 @@ class HotelController extends Controller
             'city' => 'required|string|max:255',
             'nit' => 'required|string|max:20|unique:hotels',
             'total_rooms' => 'required|integer|min:1',
+            'image' => 'nullable|string|max:255', // Assuming you want to store an image path
         ]);
 
         if ($validator->fails()) {
@@ -49,6 +50,7 @@ class HotelController extends Controller
             'city' => 'sometimes|required|string|max:255',
             'nit' => 'sometimes|required|string|max:20|unique:hotels,nit,'.$hotel->id,
             'total_rooms' => 'sometimes|required|integer|min:1',
+            'image' => 'nullable|string|max:255', // Assuming you want to store an image path
         ]);
 
         if ($validator->fails()) {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('nit')->unique();
             $table->integer('total_rooms');
+            $table->string('image')->nullable(); // Assuming you want to store an image path
             $table->timestamps();
         });
     }
