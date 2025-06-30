@@ -1,0 +1,38 @@
+# Etapa de construcción (builder)
+FROM composer:2.6 AS builder
+
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
+
+# Etapa de producción
+FROM php:8.2-fpm-alpine
+
+# 1. Instala dependencias del sistema
+RUN apk add --no-cache \
+    postgresql-dev \
+    git \
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install pdo pdo_pgsql zip
+
+# 2. Copia las dependencias de Composer
+COPY --from=builder /app/vendor /var/www/html/vendor
+
+# 3. Copia el resto de la aplicación
+WORKDIR /var/www/html
+COPY . .
+
+# 4. Configuración de Laravel para producción
+RUN cp .env.production .env && \
+    php artisan key:generate && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    chown -R www-data:www-data storage bootstrap/cache
+
+# 5. Puerto expuesto
+EXPOSE 8000
+
+# 6. Comando de inicio (sin --ansi para evitar problemas)
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
