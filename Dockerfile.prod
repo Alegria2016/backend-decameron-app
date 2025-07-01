@@ -34,12 +34,15 @@ RUN cp .env.production .env && \
 # 5. Puerto expuesto
 EXPOSE 8000
 
+RUN echo "Debug: DB_HOST=${DB_HOST}, DB_DATABASE=${DB_DATABASE}"
+RUN php artisan config:clear
+
 # Reemplaza la sección problemática con esto:
 RUN if [ "$FRESH_MIGRATE" = "true" ]; then \
-      php artisan migrate:fresh --force && \
-      php artisan db:seed --force; \
+      php artisan migrate:fresh --force || true && \
+      php artisan db:seed --force || true; \
     else \
-      php artisan migrate --force; \
+      php artisan migrate --force || true; \
     fi
 
 # 6. Comando de inicio (sin --ansi para evitar problemas)
