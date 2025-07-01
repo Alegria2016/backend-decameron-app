@@ -42,6 +42,10 @@ RUN if [ "$FRESH_MIGRATE" = "true" ]; then \
       php artisan migrate --force; \
     fi
 
+COPY deploy.sh /deploy.sh
+RUN chmod +x /deploy.sh
+CMD ["/deploy.sh"]
+
 # 6. Comando de inicio (sin --ansi para evitar problemas)
 
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"]
