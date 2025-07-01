@@ -34,9 +34,10 @@ RUN cp .env.production .env && \
 # 5. Puerto expuesto
 EXPOSE 8000
 
-# Agrega esto antes del CMD
+# Reemplaza la sección problemática con esto:
 RUN if [ "$FRESH_MIGRATE" = "true" ]; then \
-      php artisan migrate:fresh --seed --force; \
+      php artisan migrate:fresh --force && \
+      php artisan db:seed --force; \
     else \
       php artisan migrate --force; \
     fi
